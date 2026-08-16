@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover" />
+<title>Tiger's Flag Football — Practice Sign-Ups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: #173A3D;
+    color: #FDF6EC;
+    font-family: 'Work Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: calc(28px + env(safe-area-inset-top)) 18px calc(60px + env(safe-area-inset-bottom));
+  }
+  button {
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
+  }
+  input {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #FF8966;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'Baloo 2', 'Work Sans', sans-serif;
+    font-weight: 700;
+    font-size: 34px;
+    margin: 0;
+    line-height: 1.1;
+    text-align: center;
+  }
+  .sub { opacity: 0.75; font-size: 15px; margin-top: 8px; text-align: center; }
+  .card {
+    background: #1F4749;
+    border-radius: 20px;
+    padding: 22px 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    margin-top: 28px;
+  }
+  label.field-label {
+    display: block;
+    font-size: 13px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+    margin-bottom: 8px;
+  }
+  input#nameInput {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    margin-bottom: 22px;
+    background: #FDF6EC;
+    color: #173A3D;
+    font-family: inherit;
+  }
+  .date-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 4px;
+    border-top: 1px solid rgba(253,246,236,0.12);
+    gap: 10px;
+  }
+  .date-row .day { font-size: 16px; font-weight: 600; }
+  .date-row .time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+  .btns { display: flex; gap: 8px; flex-shrink: 0; }
+  .toggle-btn {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(253,246,236,0.1);
+    color: #FDF6EC;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
+    transition: background 0.15s;
+  }
+  .toggle-btn.yes.active { background: #5FA66B; color: #173A3D; }
+  .toggle-btn.no.active { background: #FF8966; color: #173A3D; }
+  #errorMsg { color: #FF8966; font-size: 14px; margin-top: 16px; display: none; }
+  #submitBtn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px 0;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    background: #FF8966;
+    color: #173A3D;
+  }
+  #submitBtn:disabled { opacity: 0.6; cursor: default; }
+  .divider {
+    text-align: center;
+    margin: 36px 0 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #FF8966;
+    opacity: 0.9;
+  }
+  .roster-card {
+    background: #1F4749;
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+  }
+  .roster-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .roster-day { font-weight: 600; font-size: 15px; }
+  .roster-time { font-family: 'IBM Plex Mono', monospace; font-size: 12px; opacity: 0.65; }
+  .roster-names { margin-top: 8px; font-size: 14px; line-height: 1.6; }
+  .roster-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    opacity: 0.5;
+    margin-top: 6px;
+  }
+  .muted { opacity: 0.5; }
+  .footer-note { text-align: center; font-size: 12px; opacity: 0.4; margin-top: 28px; }
+  .share-box {
+    background: #0F2C2E;
+    border: 1px dashed rgba(255,137,102,0.5);
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 18px;
+    font-size: 13px;
+  }
+  .share-box a { color: #FF8966; word-break: break-all; }
+  #copyBtn {
+    margin-top: 10px;
+    background: #FF8966;
+    color: #173A3D;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Practice Sign-Ups</div>
+  <h1>Tiger's Flag Football</h1>
+  <p class="sub">Enter your daughter's name and let us know which dates work.</p>
+
+  <div class="card">
+    <label class="field-label" for="nameInput">DAUGHTER'S NAME</label>
+    <input id="nameInput" type="text" placeholder="e.g. Ellie" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="done" />
+    <div id="dateRows"></div>
+    <div id="errorMsg"></div>
+    <button id="submitBtn">Submit RSVP</button>
+  </div>
+
+  <div class="divider">— Roster —</div>
+  <div id="rosterList"></div>
+
+  <p class="footer-note">Everyone who opens this link sees the same shared roster.</p>
+</div>
+
+<script>
+const EVENTS = [
+  { id: "d1", day: "Wednesday, August 19", time: "6:00 PM" },
+  { id: "d2", day: "Sunday, August 23", time: "6:30 PM" },
+  { id: "d3", day: "Friday, August 28", time: "6:00 PM" },
+  { id: "d4", day: "Sunday, August 30", time: "3:30 PM" },
+];
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznwNx9onrKa3yjWmYq2JJOwf6EikTj4fm0lgd_sKieerJmGkc6WNp39N-LyZFNIFTq/exec";
+let responses = {};
+
+function slugify(name) {
+  return name.trim().toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
+}
+
+async function loadBoard() {
+  const res = await fetch(SCRIPT_URL, { method: "GET" });
+  if (!res.ok) throw new Error("load failed");
+  return res.json();
+}
+
+async function saveEntry(name, responsesObj) {
+  // Content-Type text/plain avoids a CORS preflight, which Apps Script
+  // web apps don't handle. The script still parses the body as JSON.
+  const res = await fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({ name, responses: responsesObj }),
+  });
+  if (!res.ok) throw new Error("save failed");
+  return res.json();
+}
+
+function renderDateRows() {
+  const container = document.getElementById("dateRows");
+  container.innerHTML = "";
+  EVENTS.forEach((ev) => {
+    const row = document.createElement("div");
+    row.className = "date-row";
+    row.innerHTML = `
+      <div>
+        <div class="day">${ev.day}</div>
+        <div class="time">${ev.time}</div>
+      </div>
+      <div class="btns">
+        <button class="toggle-btn yes" data-id="${ev.id}" data-val="yes" aria-label="Yes for ${ev.day}">✓</button>
+        <button class="toggle-btn no" data-id="${ev.id}" data-val="no" aria-label="No for ${ev.day}">✕</button>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+  container.querySelectorAll(".toggle-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      const val = btn.dataset.val;
+      responses[id] = val;
+      container.querySelectorAll(`.toggle-btn[data-id="${id}"]`).forEach((b) => {
+        b.classList.toggle("active", b.dataset.val === val);
+      });
+      document.getElementById("errorMsg").style.display = "none";
+      resetSubmitLabel();
+    });
+  });
+}
+
+function resetSubmitLabel() {
+  const submitBtn = document.getElementById("submitBtn");
+  if (submitBtn.textContent === "Saved ✓") {
+    submitBtn.textContent = "Submit RSVP";
+  }
+}
+
+function renderRoster(entries) {
+  const list = document.getElementById("rosterList");
+  list.innerHTML = "";
+  const allEntries = Object.values(entries || {});
+  EVENTS.forEach((ev) => {
+    const yesNames = allEntries
+      .filter((e) => e.responses && e.responses[ev.id] === "yes")
+      .map((e) => e.name)
+      .sort((a, b) => a.localeCompare(b));
+    const card = document.createElement("div");
+    card.className = "roster-card";
+    card.innerHTML = `
+      <div class="roster-head">
+        <div class="roster-day">${ev.day}</div>
+        <div class="roster-time">${ev.time}</div>
+      </div>
+      <div class="roster-names">${
+        yesNames.length === 0
+          ? '<span class="muted">No one yet</span>'
+          : yesNames.join(", ")
+      }</div>
+      <div class="roster-count">${yesNames.length} confirmed</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+async function refreshRoster() {
+  try {
+    const data = await loadBoard();
+    renderRoster(data.entries || {});
+    return data;
+  } catch (e) {
+    document.getElementById("rosterList").innerHTML =
+      '<div class="muted" style="text-align:center;">Couldn\'t load the roster. Check your connection and reload.</div>';
+    return null;
+  }
+}
+
+async function handleSubmit() {
+  const errEl = document.getElementById("errorMsg");
+  errEl.style.display = "none";
+  const nameInput = document.getElementById("nameInput");
+  const name = nameInput.value.trim();
+  if (!name) {
+    errEl.textContent = "Enter your daughter's name first.";
+    errEl.style.display = "block";
+    return;
+  }
+  const allAnswered = EVENTS.every((ev) => responses[ev.id]);
+  if (!allAnswered) {
+    errEl.textContent = "Please answer yes or no for every date.";
+    errEl.style.display = "block";
+    return;
+  }
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Saving…";
+  try {
+    await saveEntry(name, { ...responses });
+    await refreshRoster();
+    submitBtn.textContent = "Saved ✓";
+  } catch (e) {
+    errEl.textContent = "Something went wrong saving your response. Please try again.";
+    errEl.style.display = "block";
+    submitBtn.textContent = "Submit RSVP";
+  }
+  submitBtn.disabled = false;
+}
+
+async function init() {
+  renderDateRows();
+  document.getElementById("submitBtn").addEventListener("click", handleSubmit);
+  document.getElementById("nameInput").addEventListener("input", () => {
+    document.getElementById("errorMsg").style.display = "none";
+    resetSubmitLabel();
+  });
+  await refreshRoster();
+}
+
+init();
+</script>
+</body>
+</html>
